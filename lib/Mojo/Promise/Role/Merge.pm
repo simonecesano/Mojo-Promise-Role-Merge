@@ -1,5 +1,7 @@
 package Mojo::Promise::Role::Merge;
 
+# ABSTRACT: provide a role to merge Mojo::Promise->all results
+
 use Mojo::Base -role;
 use Mojo::Util qw/dumper/;
 
