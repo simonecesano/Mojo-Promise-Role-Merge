@@ -1,4 +1,4 @@
-# Mojo::Promise::Role::Merge
+# Mojo::Promise::Merge - merge promise responses
 
 ## SYNOPSIS
 
@@ -23,8 +23,12 @@
                    $ua->get_p($pageprops),
                    $ua->get_p($revisions),
                    )
+        ->with_roles('+Merge')
+        ->flatten
+        ->merge
         ->then(sub {
-               print dumper Mojo::Promise::Merge::merge(@_);
+               my $merged = shift;
+               print STDERR dumper $merged;
                Mojo::IOLoop->stop;
            })
         ->catch(sub {
@@ -35,21 +39,40 @@
 
 ## DESCRIPTION
 
-Mojo::Promise::Merge merges the json responses of multiple requests via Hash::Merge's merge function.
+Mojo::Promise::Role::Merge adds methods to flatten and merge the json responses of multiple requests using Hash::Merge's merge function.
 
 ## FUNCTIONS
 
+### flatten
+
+    my $all = Mojo::Promise->all(@promises)
+        ->with_roles('+Merge')
+        ->flatten(sub {
+            my @results = @_;
+        })
+
+Flattens the results into an array (as opposed to the array of arrays normally returned by Mojo::Promise->all).
+
 ### merge
 
-    Mojo::Promise::Merge::merge(@_);
+    my $all = Mojo::Promise->all(@promises)
+        ->with_roles('+Merge')
+        ->flatten
+        ->merge;
 
 Merges the responses. The function can be passed - as the last parameter - a callback that will be applied to each response, like this:
 
-    Mojo::Promise::Merge::merge(@_, sub { return shift()->res->json });
+    my $all = Mojo::Promise->all(@promises)
+        ->with_roles('+Merge')
+        ->flatten
+        ->merge(sub { return shift()->res->json });
 
 Alternatively it can be passed a reference to a string that will be used by JSON::Path to process each of the results - like this:
 
-    Mojo::Promise::Merge::merge(@_, \'$.query.pages');
+    my $all = Mojo::Promise->all(@promises)
+        ->with_roles('+Merge')
+        ->flatten
+        ->merge(\'$.query.pages');
 
 Differently from Hash::Merge, Mojo::Promise::Merge can merge more than two hashes.
 
