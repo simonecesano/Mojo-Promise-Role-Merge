@@ -5,5 +5,6 @@ requires 'Mojolicious' => '7.62';
 requires 'Mojo::Promise';
 requires 'JSON::Path';
 requires 'Hash::Merge';
+requires 'Role::Tiny';
 
 test_requires 'Test::More' => '0.88';
