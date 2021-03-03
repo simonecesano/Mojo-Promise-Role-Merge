@@ -1,0 +1,8 @@
+use strict;
+use warnings;
+
+$\ = "\n"; $, = "\t";
+
+use Mojo::UserAgent;
+use Mojo::Promise::Merge;
+use Mojo::Util qw/dumper/;
