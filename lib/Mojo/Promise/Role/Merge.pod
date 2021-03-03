@@ -1,4 +1,8 @@
-=head1 Mojo::Promise::Merge - merge promise responses
+=head1 Mojo::Promise::Role::Merge
+
+=head2 NAME
+
+Mojo::Promise::Role::Merge - merge promise responses
 
 =head2 SYNOPSIS
 
